@@ -1,0 +1,25 @@
+version: '2'
+
+services:
+  pg-master:
+    image: 'docker.finogeeks.club/base/postgres-replica:9.6'
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'postgres'
+      POSTGRES_DB: 'postgres'
+      PGDATA: '/var/lib/postgresql/data'
+    ports:
+     - '5432:5432'
+
+  pg-slave:
+    image: 'docker.finogeeks.club/base/postgres-replica:9.6'
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'postgres'
+      POSTGRES_DB: 'postgres'
+      PGDATA: '/var/lib/postgresql/data'
+      REPLICATE_FROM: 'pg-master'
+    ports:
+     - '5431:5432'
+    links:
+     - 'pg-master'
